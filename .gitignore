@@ -1,0 +1,6 @@
+.vscode
+config/config.json
+config/config.yaml
+
+gemini.exe
+mysql.session.sql
