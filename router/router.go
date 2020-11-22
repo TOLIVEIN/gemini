@@ -26,10 +26,27 @@ func Init() *gin.Engine {
 
 	g := r.Group("/api")
 	{
-		g.GET("/tags", api.GetTags)
-		g.POST("/tags", api.CreateTag)
-		g.PUT("tags/:id", api.EditTag)
-		g.DELETE("tags/:id", api.DeleteTag)
+		tag := g.Group("/tags")
+		{
+			tag.GET("", api.GetTags)
+			tag.POST("", api.CreateTag)
+			tag.PUT(":id", api.EditTag)
+			tag.DELETE(":id", api.DeleteTag)
+
+		}
+
+		article := g.Group("/article")
+		{
+			article.GET("", api.GetArticles)
+			article.GET(":id", api.GetArticle)
+			article.POST("", api.CreateArticle)
+			article.PUT(":id", api.EditArticle)
+			article.DELETE(":id", api.DeleteArticle)
+		}
+
+		// user := g.Group("/user")
+		// {
+		// }
 	}
 
 	return r

@@ -40,36 +40,14 @@ func Init() {
 
 }
 
+// //GetDB ...
+// func GetDB() *gorm.DB {
+// 	return db
+// }
+
 //CreateUser ...
 func CreateUser(user User) {
 	result := db.Create(&user)
-
-	fmt.Println(result)
-}
-
-//CreateTag ...
-func CreateTag(tag Tag) {
-	result := db.Create(&tag)
-
-	fmt.Println(result)
-}
-
-//ExistTag ...
-func ExistTag(name string) bool {
-	var tag Tag
-
-	db.Where("name = ?", name).First(&tag)
-
-	if tag.ID > 0 {
-		return true
-	}
-	return false
-}
-
-//CreateArticle ...
-func CreateArticle(article Article) {
-
-	result := db.Create(&article)
 
 	fmt.Println(result)
 }
@@ -81,52 +59,9 @@ func FindUserByID(id uint) (user User) {
 	return
 }
 
-//FindTagByID ...
-func FindTagByID(id uint) (tag Tag) {
-
-	db.Where("id = ?", id).First(&tag)
-	return
-}
-
-//FindArticleByID ...
-func FindArticleByID(id uint) (article Article) {
-
-	db.Where("id = ?", id).First(&article)
-	return
-}
-
 //FindUserByName ...
 func FindUserByName(name string) (user User) {
 
 	db.Where("name = ?", name).First(&user)
-	return
-}
-
-//FindTagByName ...
-func FindTagByName(name string) (tag Tag) {
-
-	db.Where("name = ?", name).First(&tag)
-	return
-}
-
-//FindArticleByTitle ...
-func FindArticleByTitle(title string) (article Article) {
-
-	db.Where("title like ?", title).First(&article)
-	return
-}
-
-//GetTags ...
-func GetTags(page int, size int, conditions interface{}) (tags []Tag) {
-
-	db.Where(conditions).Offset(page).Limit(size).Find(&tags)
-	// fmt.Println(tags[0])
-	return
-}
-
-//GetTagsCount ...
-func GetTagsCount(conditions interface{}) (count int64) {
-
-	db.Model(&Tag{}).Where(conditions).Count(&count)
 	return
 }
