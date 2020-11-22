@@ -35,7 +35,7 @@ func Init() *gin.Engine {
 
 		}
 
-		article := g.Group("/article")
+		article := g.Group("/articles")
 		{
 			article.GET("", api.GetArticles)
 			article.GET(":id", api.GetArticle)

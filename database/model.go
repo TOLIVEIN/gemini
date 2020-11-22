@@ -1,22 +1,28 @@
 package database
 
 import (
-	"gorm.io/gorm"
+	"time"
 )
 
 //User ...
 type User struct {
-	gorm.Model
-	Username string
-	Password string
-	Email    string
+	// gorm.Model
+	ID        uint `gorm:"primarykey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	Username  string
+	Password  string
+	Email     string
 }
 
 //Article ...
 type Article struct {
-	gorm.Model
-	TagID       uint   `validate:"required,number"`
-	Tag         Tag    `validate:"required"`
+	// gorm.Model
+	ID        uint `gorm:"primarykey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
+	// TagID       uint   `gorm:"foreignKey"`
+	Tag         Tag    `gorm:"embedded"`
 	Title       string `validate:"required,alphanumunicode"`
 	Description string `validate:"alphanumunicode"`
 	Content     string
@@ -26,7 +32,10 @@ type Article struct {
 
 //Tag ...
 type Tag struct {
-	gorm.Model
+	// gorm.Model
+	ID        uint `gorm:"primarykey"`
+	CreatedAt time.Time
+	UpdatedAt time.Time
 	Name      string `validate:"required,alphanumunicode"`
 	CreatedBy string `validate:"alphanumunicode"`
 	UpdatedBy string

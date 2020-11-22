@@ -20,17 +20,11 @@ func CreateArticle(c *gin.Context) {
 	content := c.Query("content")
 	createdBy := c.Query("createdBy")
 
-	// fmt.Println(name, createdBy)
-
 	code := status.Success
 
-	// database.CreateTag(database.Tag{
-	// 	Name:      name,
-	// 	CreatedBy: createdBy,
-	// })
-
 	article := database.Article{
-		TagID:       uint(tagID),
+		// TagID: uint(tagID),
+		Tag:         database.FindTagByID(uint(tagID)),
 		Title:       title,
 		Description: description,
 		Content:     content,
@@ -40,8 +34,6 @@ func CreateArticle(c *gin.Context) {
 	err := validate.Struct(article)
 	if err == nil {
 		if database.ExistTagByID(uint(tagID)) {
-			// code = status.Success
-			// database.CreateTag(tag)
 			database.CreateArticle(article)
 		} else {
 			code = status.ErrorNotExistTag
@@ -61,6 +53,29 @@ func CreateArticle(c *gin.Context) {
 
 //GetArticle ...
 func GetArticle(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	code := status.Success
+
+	data := make(map[string]interface{})
+
+	err := validate.Var(id, "number")
+	if err == nil {
+		if database.ExistArticleByID(uint(id)) {
+			data["article"] = database.GetArticle(uint(id))
+		} else {
+			code = status.ErrorNotExistArticle
+		}
+
+	} else {
+		code = status.InvalidParams
+		fmt.Println(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    code,
+		"message": status.GetMessage(code),
+		"data":    data,
+	})
 }
 
 //GetArticles ...
@@ -72,8 +87,8 @@ func GetArticles(c *gin.Context) {
 
 	size, _ := strconv.Atoi(config.CONFIG.PageSize)
 
-	data["articles"] = database.GetTags(util.GetPage(c), size, conditions)
-	data["total"] = database.GetTagsCount(conditions)
+	data["articles"] = database.GetArticles(util.GetPage(c), size, conditions)
+	data["total"] = database.GetArticlesCount(conditions)
 
 	c.JSON(http.StatusOK, gin.H{
 		"code":    code,
@@ -85,10 +100,68 @@ func GetArticles(c *gin.Context) {
 
 //EditArticle ...
 func EditArticle(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
+	tagID, _ := strconv.Atoi(c.Query("tagID"))
+	title := c.Query("title")
+	description := c.Query("description")
+	content := c.Query("content")
+	updatedBy := c.Query("updatedBy")
 
+	code := status.Success
+
+	err := validate.Var(updatedBy, "required,alphanumunicode")
+	if err == nil {
+
+		if database.ExistArticleByID(uint(id)) {
+			var article database.Article
+			article.UpdatedBy = updatedBy
+			if title != "" {
+				article.Title = title
+			}
+			if database.ExistTagByID(uint(tagID)) {
+				article.Tag = database.FindTagByID(uint(tagID))
+			}
+			article.Description = description
+			article.Content = content
+			database.EditArticle(uint(id), article)
+		} else {
+			code = status.ErrorNotExistArticle
+		}
+	} else {
+		code = status.InvalidParams
+		fmt.Println(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    code,
+		"message": status.GetMessage(code),
+		"data":    make(map[string]string),
+	})
 }
 
 //DeleteArticle ...
 func DeleteArticle(c *gin.Context) {
+	id, _ := strconv.Atoi(c.Param("id"))
 
+	code := status.Success
+	err := validate.Var(id, "required,number")
+
+	if err == nil {
+
+		if database.ExistArticleByID(uint(id)) {
+
+			database.DeleteArticle(uint(id))
+		} else {
+			code = status.ErrorNotExistArticle
+		}
+	} else {
+		code = status.InvalidParams
+		fmt.Println(err)
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    code,
+		"message": status.GetMessage(code),
+		"data":    make(map[string]string),
+	})
 }

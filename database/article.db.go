@@ -36,8 +36,15 @@ func ExistArticleByID(id uint) bool {
 
 //GetArticles ...
 func GetArticles(page int, size int, conditions interface{}) (articles []Article) {
-	db.Preload("Tag").Where(conditions).Offset(page).Limit(size).Find(&articles)
+	db.Where(conditions).Offset(page).Limit(size).Find(&articles)
 
+	return
+}
+
+//GetArticlesCount ...
+func GetArticlesCount(conditions interface{}) (count int64) {
+
+	db.Model(&Article{}).Where(conditions).Count(&count)
 	return
 }
 
@@ -48,7 +55,7 @@ func GetArticle(id uint) (article Article) {
 }
 
 //EditArticle ...
-func EditArticle(id uint, data map[string]interface{}) {
+func EditArticle(id uint, data interface{}) {
 	db.Model(&Article{}).Where("id = ?", id).Updates(data)
 }
 

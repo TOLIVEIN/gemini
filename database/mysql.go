@@ -38,6 +38,24 @@ func Init() {
 
 	}
 
+	CreateTables()
+
+}
+
+//CreateTables ...
+func CreateTables() {
+	if !db.Migrator().HasTable(&Article{}) {
+		db.Migrator().CreateTable(&Article{})
+		fmt.Println("Created table ---- articles")
+	} else {
+		fmt.Println("Exist table ---- articles")
+	}
+	if !db.Migrator().HasTable(&Tag{}) {
+		db.Migrator().CreateTable(&Tag{})
+		fmt.Println("Created table ---- tags")
+	} else {
+		fmt.Println("Exist table ---- tags")
+	}
 }
 
 // //GetDB ...
