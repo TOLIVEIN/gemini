@@ -95,7 +95,7 @@ func EditTag(c *gin.Context) {
 
 	code := status.Success
 
-	err := validate.Var(updatedBy, "required,alphanumunicode")
+	err := validate.Var(updatedBy, "required,max=20")
 	if err == nil {
 
 		if database.ExistTagByID(uint(id)) {

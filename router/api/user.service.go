@@ -10,6 +10,7 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"golang.org/x/crypto/bcrypt"
 )
 
 //CreateUser ...
@@ -18,18 +19,21 @@ func CreateUser(c *gin.Context) {
 	password := c.Query("password")
 	email := c.Query("email")
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		fmt.Println(err)
+	}
 	code := status.Success
 
 	user := database.User{
 		Username: username,
-		Password: password,
+		Password: string(hashedPassword),
 		Email:    email,
 	}
 
-	err := validate.Struct(user)
+	err = validate.Struct(user)
 	if err == nil {
 		if !database.ExistUserByUsername(username) {
-			// code = status.Success
 			database.CreateUser(user)
 		} else {
 			code = status.ErrorExistUser
@@ -100,23 +104,28 @@ func EditUser(c *gin.Context) {
 	password := c.Query("password")
 	email := c.Query("email")
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	code := status.Success
 
-	data := database.User{
+	user := database.User{
 		Username: username,
-		Password: password,
+		Password: string(hashedPassword),
 		Email:    email,
 	}
 
-	err := validate.Struct(data)
+	err = validate.Struct(user)
 	if err == nil {
 
 		if database.ExistUserByID(uint(id)) {
-			var user database.User
+			// var user database.User
 
-			user.Username = username
-			user.Password = password
-			user.Email = email
+			// user.Username = username
+			// user.Password = password
+			// user.Email = email
 			database.EditUser(uint(id), user)
 		} else {
 			code = status.ErrorNotExistUser

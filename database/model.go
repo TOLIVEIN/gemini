@@ -11,7 +11,7 @@ type User struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Username  string `validate:"required,min=1,max=20"`
-	Password  string `validate:"required,min=6,max=20"`
+	Password  string `validate:"required,min=6"`
 	Email     string `validate:"required,email"`
 }
 
@@ -19,7 +19,7 @@ type User struct {
 type Auth struct {
 	ID       uint   `gorm:"primarykey"`
 	Username string `validate:"required,min=1,max=20"`
-	Password string `validate:"required,min=6,max=20"`
+	Password string `validate:"required,min=6"`
 }
 
 //Article ...

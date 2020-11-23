@@ -1,16 +1,24 @@
 package database
 
-import "gemini/status"
+import (
+	"fmt"
+	"gemini/status"
+
+	"golang.org/x/crypto/bcrypt"
+)
 
 //CheckAuth ...
 func CheckAuth(username, password string) int {
 	var auth User
-	db.Select("id").Where(User{Username: username, Password: password}).First(&auth)
+	db.Select("id, password").Where("username = ?", username).First(&auth)
+
+	fmt.Println(auth)
 	if auth.ID > 0 {
-		return status.Success
-	}
-	db.Select("id").Where(User{Username: username}).First(&auth)
-	if auth.ID > 0 {
+		err := bcrypt.CompareHashAndPassword([]byte(auth.Password), []byte(password))
+		if err == nil {
+			return status.Success
+		}
+		fmt.Println(err)
 		return status.ErrorPassword
 	}
 	return status.ErrorNotExistUser
