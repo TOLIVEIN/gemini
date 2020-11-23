@@ -1,4 +1,4 @@
-package api
+package service
 
 import (
 	"fmt"
@@ -15,13 +15,8 @@ import (
 
 var validate *validator.Validate
 
-//InitValidator ...
-func InitValidator() {
-
+func init() {
 	validate = validator.New()
-
-	// validateStruct()
-	// validateVariable()
 }
 
 //GetTags ...

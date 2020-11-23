@@ -3,7 +3,7 @@ package router
 import (
 	"gemini/config"
 	"gemini/middleware"
-	"gemini/router/api"
+	"gemini/service"
 	"gemini/status"
 	"net/http"
 
@@ -25,37 +25,37 @@ func Init() *gin.Engine {
 		})
 	})
 
-	r.GET("/auth", api.CheckAuth)
+	r.GET("/auth", service.CheckAuth)
 
-	g := r.Group("/api")
-	// g.Use(middleware.JWT())
+	api := r.Group("/api")
+	// api.Use(middleware.JWT())
 	{
-		tag := g.Group("/tags")
+		tag := api.Group("/tags")
 		{
-			tag.GET("", api.GetTags)
-			tag.Use(middleware.JWT()).POST("", api.CreateTag)
-			tag.Use(middleware.JWT()).PUT(":id", api.EditTag)
-			tag.Use(middleware.JWT()).DELETE(":id", api.DeleteTag)
+			tag.GET("", service.GetTags)
+			tag.Use(middleware.JWT()).POST("", service.CreateTag)
+			tag.Use(middleware.JWT()).PUT(":id", service.EditTag)
+			tag.Use(middleware.JWT()).DELETE(":id", service.DeleteTag)
 
 		}
 
-		article := g.Group("/articles")
+		article := api.Group("/articles")
 		{
-			article.GET("", api.GetArticles)
-			article.GET(":id", api.GetArticle)
-			article.Use(middleware.JWT()).POST("", api.CreateArticle)
-			article.Use(middleware.JWT()).PUT(":id", api.EditArticle)
-			article.Use(middleware.JWT()).DELETE(":id", api.DeleteArticle)
+			article.GET("", service.GetArticles)
+			article.GET(":id", service.GetArticle)
+			article.Use(middleware.JWT()).POST("", service.CreateArticle)
+			article.Use(middleware.JWT()).PUT(":id", service.EditArticle)
+			article.Use(middleware.JWT()).DELETE(":id", service.DeleteArticle)
 		}
 
-		user := g.Group("/users")
+		user := api.Group("/users")
 		// user.Use(middleware.JWT())
 		{
-			user.POST("", api.CreateUser)
-			user.Use(middleware.JWT()).GET("", api.GetUsers)
-			user.Use(middleware.JWT()).GET(":id", api.GetUser)
-			user.Use(middleware.JWT()).PUT(":id", api.EditUser)
-			user.Use(middleware.JWT()).DELETE(":id", api.DeleteUser)
+			user.POST("", service.CreateUser)
+			user.Use(middleware.JWT()).GET("", service.GetUsers)
+			user.Use(middleware.JWT()).GET(":id", service.GetUser)
+			user.Use(middleware.JWT()).PUT(":id", service.EditUser)
+			user.Use(middleware.JWT()).DELETE(":id", service.DeleteUser)
 		}
 	}
 

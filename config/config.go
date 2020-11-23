@@ -32,8 +32,8 @@ type Config struct {
 
 var config *Config
 
-//ReadConfig ...
-func ReadConfig() {
+//Init ...
+func Init() {
 	viper.SetConfigName("config")
 	viper.AddConfigPath("config")
 	viper.SetConfigType("yaml")

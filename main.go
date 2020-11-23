@@ -5,19 +5,15 @@ import (
 	"gemini/config"
 	"gemini/database"
 	"gemini/router"
-	"gemini/router/api"
 	"net/http"
 )
 
 func main() {
 
-	config.ReadConfig()
-
+	config.Init()
 	database.Init()
-
-	api.InitValidator()
-
 	router := router.Init()
+
 	s := &http.Server{
 		Addr:    fmt.Sprintf(":%s", config.GetConfig().Port),
 		Handler: router,

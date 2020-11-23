@@ -1,4 +1,4 @@
-package api
+package service
 
 import (
 	"gemini/database"
@@ -37,8 +37,8 @@ func CheckAuth(c *gin.Context) {
 		log.Println(validErrors)
 	}
 	c.JSON(http.StatusOK, gin.H{
-		"code": code,
-		"msg":  status.GetMessage(code),
-		"data": data,
+		"code":    code,
+		"message": status.GetMessage(code),
+		"data":    data,
 	})
 }
