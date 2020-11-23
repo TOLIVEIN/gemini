@@ -11,7 +11,7 @@ import (
 func GetPage(c *gin.Context) (result int) {
 	result = 0
 	page, _ := strconv.Atoi(c.Query("page"))
-	pageSize, _ := strconv.Atoi(config.CONFIG.PageSize)
+	pageSize, _ := strconv.Atoi(config.GetConfig().PageSize)
 
 	if page > 0 {
 		result = (page - 1) * pageSize

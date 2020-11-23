@@ -85,7 +85,7 @@ func GetArticles(c *gin.Context) {
 
 	code := status.Success
 
-	size, _ := strconv.Atoi(config.CONFIG.PageSize)
+	size, _ := strconv.Atoi(config.GetConfig().PageSize)
 
 	data["articles"] = database.GetArticles(util.GetPage(c), size, conditions)
 	data["total"] = database.GetArticlesCount(conditions)

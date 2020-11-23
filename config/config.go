@@ -9,9 +9,10 @@ import (
 
 //Config ...
 type Config struct {
-	Port     string
-	RunMode  string
-	PageSize string
+	Port      string
+	RunMode   string
+	PageSize  string
+	JwtSecret string
 	// Mysql MySQL
 	Mysql struct {
 		URL      string
@@ -29,8 +30,7 @@ type Config struct {
 // 	database string
 // }
 
-//CONFIG ...
-var CONFIG Config
+var config *Config
 
 //ReadConfig ...
 func ReadConfig() {
@@ -45,9 +45,14 @@ func ReadConfig() {
 
 	// viper.WatchConfig()
 
-	err = viper.Unmarshal(&CONFIG)
+	err = viper.Unmarshal(&config)
 	if err != nil {
 		fmt.Printf("fail to unmarshal config: %s\n", err)
 	}
-	fmt.Println(CONFIG)
+	// fmt.Println(config)
+}
+
+//GetConfig ...
+func GetConfig() *Config {
+	return config
 }

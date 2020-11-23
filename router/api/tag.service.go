@@ -32,7 +32,7 @@ func GetTags(c *gin.Context) {
 
 	code := status.Success
 
-	size, _ := strconv.Atoi(config.CONFIG.PageSize)
+	size, _ := strconv.Atoi(config.GetConfig().PageSize)
 
 	data["tags"] = database.GetTags(util.GetPage(c), size, conditions)
 	data["total"] = database.GetTagsCount(conditions)

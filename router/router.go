@@ -2,6 +2,7 @@ package router
 
 import (
 	"gemini/config"
+	"gemini/middleware"
 	"gemini/router/api"
 	"gemini/status"
 	"net/http"
@@ -15,7 +16,7 @@ func Init() *gin.Engine {
 
 	r.Use(gin.Logger(), gin.Recovery())
 
-	gin.SetMode(config.CONFIG.RunMode)
+	gin.SetMode(config.GetConfig().RunMode)
 
 	r.GET("/index", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
@@ -24,14 +25,17 @@ func Init() *gin.Engine {
 		})
 	})
 
+	r.GET("/auth", api.CheckAuth)
+
 	g := r.Group("/api")
+	// g.Use(middleware.JWT())
 	{
 		tag := g.Group("/tags")
 		{
 			tag.GET("", api.GetTags)
-			tag.POST("", api.CreateTag)
-			tag.PUT(":id", api.EditTag)
-			tag.DELETE(":id", api.DeleteTag)
+			tag.Use(middleware.JWT()).POST("", api.CreateTag)
+			tag.Use(middleware.JWT()).PUT(":id", api.EditTag)
+			tag.Use(middleware.JWT()).DELETE(":id", api.DeleteTag)
 
 		}
 
@@ -39,14 +43,20 @@ func Init() *gin.Engine {
 		{
 			article.GET("", api.GetArticles)
 			article.GET(":id", api.GetArticle)
-			article.POST("", api.CreateArticle)
-			article.PUT(":id", api.EditArticle)
-			article.DELETE(":id", api.DeleteArticle)
+			article.Use(middleware.JWT()).POST("", api.CreateArticle)
+			article.Use(middleware.JWT()).PUT(":id", api.EditArticle)
+			article.Use(middleware.JWT()).DELETE(":id", api.DeleteArticle)
 		}
 
-		// user := g.Group("/user")
-		// {
-		// }
+		user := g.Group("/users")
+		// user.Use(middleware.JWT())
+		{
+			user.POST("", api.CreateUser)
+			user.Use(middleware.JWT()).GET("", api.GetUsers)
+			user.Use(middleware.JWT()).GET(":id", api.GetUser)
+			user.Use(middleware.JWT()).PUT(":id", api.EditUser)
+			user.Use(middleware.JWT()).DELETE(":id", api.DeleteUser)
+		}
 	}
 
 	return r
