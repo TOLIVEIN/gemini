@@ -1,6 +1,7 @@
 package service
 
 import (
+	"fmt"
 	"gemini/database"
 	"gemini/status"
 	"gemini/util"
@@ -12,17 +13,21 @@ import (
 
 //CheckAuth ...
 func CheckAuth(c *gin.Context) {
-	username := c.Query("username")
-	password := c.Query("password")
-	user := database.Auth{Username: username, Password: password}
+	// username := c.Query("username")
+	// password := c.Query("password")
+	user := database.Auth{}
+
+	if err := c.ShouldBind(&user); err != nil {
+		fmt.Println(err)
+	}
 
 	validErrors := validate.Struct(user)
 	data := make(map[string]interface{})
 	code := status.Success
 	if validErrors == nil {
-		authCode := database.CheckAuth(username, password)
+		authCode := database.CheckAuth(user.Username, user.Password)
 		if authCode == status.Success {
-			token, err := util.GenerateToken(username, password)
+			token, err := util.GenerateToken(user.Username, user.Password)
 			if err != nil {
 				code = status.ErrorAuthToken
 			} else {

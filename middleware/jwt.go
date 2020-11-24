@@ -4,6 +4,7 @@ import (
 	"gemini/status"
 	"gemini/util"
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -12,10 +13,13 @@ import (
 //JWT ...
 func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
+
+		header := c.Request.Header
+		token := strings.Join(header["Token"], "")
+
 		var data interface{}
 		code := status.Success
 
-		token := c.Query("token")
 		if token == "" {
 			code = status.InvalidParams
 		} else {

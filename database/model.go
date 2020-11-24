@@ -25,16 +25,17 @@ type Auth struct {
 //Article ...
 type Article struct {
 	// gorm.Model
-	ID        uint `gorm:"primarykey"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	// TagID       uint   `gorm:"foreignKey"`
-	Tag         Tag    `gorm:"embedded"`
-	Title       string `validate:"required,max=100"`
-	Description string `validate:"max=255"`
-	Content     string
-	CreatedBy   string `validate:"max=20"`
-	UpdatedBy   string
+	ID            uint `gorm:"primarykey"`
+	CreatedAt     time.Time
+	UpdatedAt     time.Time
+	TagID         uint
+	Tag           Tag
+	Title         string `validate:"required,max=100"`
+	Description   string `validate:"max=255"`
+	CoverImageURL string `validate:"required,max=255"`
+	Content       string
+	CreatedBy     string `validate:"max=20"`
+	UpdatedBy     string
 }
 
 //Tag ...

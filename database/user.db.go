@@ -1,12 +1,8 @@
 package database
 
-import "fmt"
-
 //CreateUser ...
 func CreateUser(user User) {
-	result := db.Create(&user)
-
-	fmt.Println(result)
+	db.Create(&user)
 }
 
 //FindUserByID ...

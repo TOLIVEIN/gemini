@@ -14,26 +14,40 @@ import (
 
 //CreateArticle ...
 func CreateArticle(c *gin.Context) {
-	tagID, _ := strconv.Atoi(c.Query("tagID"))
-	title := c.Query("title")
-	description := c.Query("description")
-	content := c.Query("content")
-	createdBy := c.Query("createdBy")
+	// tagID, _ := strconv.Atoi(c.Query("tagID"))
+	// title := c.Query("title")
+	// description := c.Query("description")
+	// coverImageURL := c.Query("coverImageURL")
+	// content := c.Query("content")
+	// createdBy := c.Query("createdBy")
 
-	code := status.Success
+	// article := database.Article{
+	// 	// TagID: uint(tagID),
+	// 	Tag:           database.FindTagByID(uint(tagID)),
+	// 	Title:         title,
+	// 	Description:   description,
+	// 	CoverImageURL: coverImageURL,
+	// 	Content:       content,
+	// 	CreatedBy:     createdBy,
+	// }
+	article := database.Article{}
 
-	article := database.Article{
-		// TagID: uint(tagID),
-		Tag:         database.FindTagByID(uint(tagID)),
-		Title:       title,
-		Description: description,
-		Content:     content,
-		CreatedBy:   createdBy,
+	if err := c.ShouldBind(&article); err != nil {
+		fmt.Println(err)
 	}
 
+	// fmt.Println(tagID)
+	tag := database.FindTagByID(article.TagID)
+
+	article.Tag = tag
+	// article.TagID = uint(tagID)
+
+	fmt.Println(tag, article)
+
+	code := status.Success
 	err := validate.Struct(article)
 	if err == nil {
-		if database.ExistTagByID(uint(tagID)) {
+		if database.ExistTagByID(article.TagID) {
 			database.CreateArticle(article)
 		} else {
 			code = status.ErrorNotExistTag
@@ -104,6 +118,7 @@ func EditArticle(c *gin.Context) {
 	tagID, _ := strconv.Atoi(c.Query("tagID"))
 	title := c.Query("title")
 	description := c.Query("description")
+	coverImageURL := c.Query("coverImageURL")
 	content := c.Query("content")
 	updatedBy := c.Query("updatedBy")
 
@@ -114,7 +129,6 @@ func EditArticle(c *gin.Context) {
 
 		if database.ExistArticleByID(uint(id)) {
 			var article database.Article
-			article.UpdatedBy = updatedBy
 			if title != "" {
 				article.Title = title
 			}
@@ -122,7 +136,9 @@ func EditArticle(c *gin.Context) {
 				article.Tag = database.FindTagByID(uint(tagID))
 			}
 			article.Description = description
+			article.CoverImageURL = coverImageURL
 			article.Content = content
+			article.UpdatedBy = updatedBy
 			database.EditArticle(uint(id), article)
 		} else {
 			code = status.ErrorNotExistArticle

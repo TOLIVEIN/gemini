@@ -19,14 +19,24 @@ func Init() {
 		config.GetConfig().Mysql.URL,
 		config.GetConfig().Mysql.Database)
 
+	// newLogger := logger.New(
+	// 	log.New(os.Stdout, "\r\n", log.LstdFlags),
+	// 	logger.Config{
+	// 		SlowThreshold: 0,
+	// 		LogLevel:      logger.Info,
+	// 		Colorful:      true,
+	// 	},
+	// )
+
 	var err error
+	// db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{Logger: newLogger})
 	db, err = gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
 	if err != nil {
-		fmt.Printf("Fail to connect to database -- %s: %s\n",
+		fmt.Printf("Fail to connect to database ---- %s: %s\n",
 			config.GetConfig().Mysql.Database, err)
 	} else {
-		fmt.Printf("Connected to database -- %s\n",
+		fmt.Printf("Connected to database ---- %s\n",
 			config.GetConfig().Mysql.Database)
 		sqlDB, _ := db.DB()
 

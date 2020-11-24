@@ -5,7 +5,9 @@ import (
 	"gemini/middleware"
 	"gemini/service"
 	"gemini/status"
+	"gemini/util"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 )
@@ -25,7 +27,14 @@ func Init() *gin.Engine {
 		})
 	})
 
-	r.GET("/auth", service.CheckAuth)
+	r.POST("/auth", service.CheckAuth)
+
+	r.POST("/upload", service.UploadImage)
+
+	// fmt.Println(util.GetImageFullPath())
+	// fmt.Println(strings.Replace(util.GetImageFullPath(), "\\", "/", -1))
+	dir, _ := os.Getwd()
+	r.StaticFS("/upload/images", http.Dir(dir+util.GetImageFullPath()))
 
 	api := r.Group("/api")
 	// api.Use(middleware.JWT())

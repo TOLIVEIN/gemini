@@ -42,26 +42,18 @@ func GetTags(c *gin.Context) {
 
 //CreateTag ...
 func CreateTag(c *gin.Context) {
-	name := c.Query("name")
-	createdBy := c.Query("createdBy")
 
-	// fmt.Println(name, createdBy)
+	tag := database.Tag{}
+
+	if err := c.ShouldBind(&tag); err != nil {
+		fmt.Println(err)
+	}
 
 	code := status.Success
 
-	// database.CreateTag(database.Tag{
-	// 	Name:      name,
-	// 	CreatedBy: createdBy,
-	// })
-
-	tag := database.Tag{
-		Name:      name,
-		CreatedBy: createdBy,
-	}
-
 	err := validate.Struct(tag)
 	if err == nil {
-		if !database.ExistTagByName(name) {
+		if !database.ExistTagByName(tag.Name) {
 			// code = status.Success
 			database.CreateTag(tag)
 		} else {

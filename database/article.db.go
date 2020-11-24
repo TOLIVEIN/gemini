@@ -1,13 +1,13 @@
 package database
 
-import "fmt"
+import "gorm.io/gorm/clause"
 
 //CreateArticle ...
 func CreateArticle(article Article) {
 
-	result := db.Create(&article)
+	db.Create(&article)
 
-	fmt.Println(result)
+	// fmt.Println(result)
 }
 
 //ExistArticleByName ...
@@ -36,7 +36,7 @@ func ExistArticleByID(id uint) bool {
 
 //GetArticles ...
 func GetArticles(page int, size int, conditions interface{}) (articles []Article) {
-	db.Where(conditions).Offset(page).Limit(size).Find(&articles)
+	db.Preload(clause.Associations).Where(conditions).Offset(page).Limit(size).Find(&articles)
 
 	return
 }
@@ -50,7 +50,7 @@ func GetArticlesCount(conditions interface{}) (count int64) {
 
 //GetArticle ...
 func GetArticle(id uint) (article Article) {
-	db.Where("id = ?", id).First(&article)
+	db.Preload(clause.Associations).Where("id = ?", id).First(&article)
 	return
 }
 
