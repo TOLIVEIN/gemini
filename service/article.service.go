@@ -36,7 +36,7 @@ func CreateArticle(c *gin.Context) {
 		fmt.Println(err)
 	}
 
-	// fmt.Println(tagID)
+	// fmt.Println(article.TagID)
 	tag := database.FindTagByID(article.TagID)
 
 	article.Tag = tag
@@ -103,6 +103,28 @@ func GetArticles(c *gin.Context) {
 
 	data["articles"] = database.GetArticles(util.GetPage(c), size, conditions)
 	data["total"] = database.GetArticlesCount(conditions)
+
+	c.JSON(http.StatusOK, gin.H{
+		"code":    code,
+		"message": status.GetMessage(code),
+		"data":    data,
+	})
+
+}
+
+//SearchArticles ...
+func SearchArticles(c *gin.Context) {
+	// conditions := make(map[string]interface{})
+	data := make(map[string]interface{})
+
+	title := c.Query("title")
+
+	code := status.Success
+
+	size, _ := strconv.Atoi(config.GetConfig().PageSize)
+
+	data["articles"] = database.SearchArticles(util.GetPage(c), size, title)
+	data["total"] = database.SearchArticlesCount(title)
 
 	c.JSON(http.StatusOK, gin.H{
 		"code":    code,

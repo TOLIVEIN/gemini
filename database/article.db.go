@@ -54,6 +54,19 @@ func GetArticle(id uint) (article Article) {
 	return
 }
 
+//SearchArticles ...
+func SearchArticles(page int, size int, title string) (articles []Article) {
+	db.Preload(clause.Associations).Where("title like ?", title).Offset(page).Limit(size).Find(&articles)
+
+	return
+}
+
+//SearchArticlesCount ...
+func SearchArticlesCount(title string) (count int64) {
+	db.Model(&Article{}).Where("title like ?", title).Count(&count)
+	return
+}
+
 //EditArticle ...
 func EditArticle(id uint, data interface{}) {
 	db.Model(&Article{}).Where("id = ?", id).Updates(data)
