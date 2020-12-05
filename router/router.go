@@ -16,7 +16,7 @@ import (
 func Init() *gin.Engine {
 	r := gin.New()
 
-	r.Use(gin.Logger(), gin.Recovery())
+	r.Use(gin.Logger(), gin.Recovery(), middleware.CORS())
 
 	gin.SetMode(config.GetConfig().RunMode)
 

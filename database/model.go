@@ -1,20 +1,18 @@
 package database
 
 import (
-	"time"
-
 	"gorm.io/gorm"
 )
 
 //User ...
 type User struct {
-	// gorm.Model
-	ID        uint `gorm:"primarykey"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
-	Username  string `validate:"required,min=1,max=20"`
-	Password  string `validate:"required,min=6"`
-	Email     string `validate:"required,email"`
+	gorm.Model
+	// ID        uint `gorm:"primarykey"`
+	// CreatedAt time.Time
+	// UpdatedAt time.Time
+	Username string `validate:"required,min=1,max=20"`
+	Password string `validate:"required,min=6"`
+	Email    string `validate:"required,email"`
 }
 
 //Auth ...
@@ -51,24 +49,3 @@ type Tag struct {
 	UpdatedBy string
 	Articles  []*Article `gorm:"many2many:article_tag"`
 }
-
-// // AAA ...
-// type AAA struct {
-// 	ID        uint `gorm:"primarykey"`
-// 	CreatedAt time.Time
-// 	UpdatedAt time.Time
-// 	// TagIDs        []uint
-// 	Tags          []Tag  `gorm:"many2many:article_tags;"`
-// 	Title         string `validate:"required,max=100"`
-// 	Description   string `validate:"max=255"`
-// 	CoverImageURL string `validate:"required,max=255"`
-// 	Content       string
-// 	CreatedBy     string `validate:"max=20"`
-// 	UpdatedBy     string
-// }
-
-// // BBB ...
-// type BBB struct {
-// 	gorm.Model
-// 	Name string
-// }
