@@ -21,22 +21,24 @@ func ExistTagByName(name string) bool {
 	return false
 }
 
-//ExistTagByID ...
-func ExistTagByID(id uint) bool {
-	var tag Tag
+//ExistTagsByIDs ...
+func ExistTagsByIDs(ids []uint) bool {
+	var tags []Tag
 
-	db.Where("id = ?", id).First(&tag)
+	// db.Where("id = ?", id).First(&tag)
+	db.Find(&tags, ids)
 
-	if tag.ID > 0 {
+	if len(tags) == len(ids) {
 		return true
 	}
 	return false
 }
 
-//FindTagByID ...
-func FindTagByID(id uint) (tag Tag) {
+//FindTagsByIDs ...
+func FindTagsByIDs(ids []uint) (tags []*Tag) {
 
-	db.Where("id = ?", id).First(&tag)
+	// db.Where("id = ?", id).First(&tag)
+	db.Find(&tags, ids)
 	return
 }
 

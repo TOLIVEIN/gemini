@@ -78,14 +78,17 @@ func EditTag(c *gin.Context) {
 	name := c.Query("name")
 	updatedBy := c.Query("updatedBy")
 
+	ids := make([]uint, 1)
+
 	fmt.Println(id, name, updatedBy)
 
 	code := status.Success
 
 	err := validate.Var(updatedBy, "required,max=20")
 	if err == nil {
+		ids = append(ids, uint(id))
 
-		if database.ExistTagByID(uint(id)) {
+		if database.ExistTagsByIDs(ids) {
 			data := make(map[string]interface{})
 			data["updated_by"] = updatedBy
 			if name != "" {
@@ -111,13 +114,19 @@ func EditTag(c *gin.Context) {
 //DeleteTag ...
 func DeleteTag(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
+	ids := make([]uint, 1)
+	// for _, item := range strings.Split(c.Query("tagID"), ";") {
+	// 	id, _ := strconv.Atoi(item)
+	// 	ids = append(ids, uint(id))
+	// }
 
 	code := status.Success
 	err := validate.Var(id, "required,number")
 
 	if err == nil {
+		ids = append(ids, uint(id))
 
-		if database.ExistTagByID(uint(id)) {
+		if database.ExistTagsByIDs(ids) {
 
 			database.DeleteTag(uint(id))
 		} else {

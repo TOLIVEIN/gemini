@@ -55,19 +55,19 @@ func Init() {
 //CreateTables ...
 func CreateTables() {
 	if !db.Migrator().HasTable(&Article{}) {
-		db.Migrator().CreateTable(&Article{})
+		db.AutoMigrate(&Article{})
 		fmt.Println("Created table ---- articles")
 	} else {
 		fmt.Println("Exist table ---- articles")
 	}
 	if !db.Migrator().HasTable(&Tag{}) {
-		db.Migrator().CreateTable(&Tag{})
+		db.AutoMigrate(&Tag{})
 		fmt.Println("Created table ---- tags")
 	} else {
 		fmt.Println("Exist table ---- tags")
 	}
 	if !db.Migrator().HasTable(&User{}) {
-		db.Migrator().CreateTable(&User{})
+		db.AutoMigrate(&User{})
 		fmt.Println("Created table ---- users")
 	} else {
 		fmt.Println("Exist table ---- users")

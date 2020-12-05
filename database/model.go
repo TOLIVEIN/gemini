@@ -2,6 +2,8 @@ package database
 
 import (
 	"time"
+
+	"gorm.io/gorm"
 )
 
 //User ...
@@ -24,27 +26,49 @@ type Auth struct {
 
 //Article ...
 type Article struct {
-	// gorm.Model
-	ID            uint `gorm:"primarykey"`
-	CreatedAt     time.Time
-	UpdatedAt     time.Time
-	TagID         uint
-	Tag           Tag
+	gorm.Model
+	// ID        uint `gorm:"primarykey"`
+	// CreatedAt time.Time
+	// UpdatedAt time.Time
+	// TagIDs        []uint
 	Title         string `validate:"required,max=100"`
 	Description   string `validate:"max=255"`
 	CoverImageURL string `validate:"required,max=255"`
 	Content       string
 	CreatedBy     string `validate:"max=20"`
 	UpdatedBy     string
+	Tags          []*Tag `gorm:"many2many:article_tag"`
 }
 
 //Tag ...
 type Tag struct {
-	// gorm.Model
-	ID        uint `gorm:"primarykey"`
-	CreatedAt time.Time
-	UpdatedAt time.Time
+	gorm.Model
+	// ID        uint `gorm:"primarykey"`
+	// CreatedAt time.Time
+	// UpdatedAt time.Time
 	Name      string `validate:"required,max=20"`
 	CreatedBy string `validate:"max=20"`
 	UpdatedBy string
+	Articles  []*Article `gorm:"many2many:article_tag"`
 }
+
+// // AAA ...
+// type AAA struct {
+// 	ID        uint `gorm:"primarykey"`
+// 	CreatedAt time.Time
+// 	UpdatedAt time.Time
+// 	// TagIDs        []uint
+// 	Tags          []Tag  `gorm:"many2many:article_tags;"`
+// 	Title         string `validate:"required,max=100"`
+// 	Description   string `validate:"max=255"`
+// 	CoverImageURL string `validate:"required,max=255"`
+// 	Content       string
+// 	CreatedBy     string `validate:"max=20"`
+// 	UpdatedBy     string
+// }
+
+// // BBB ...
+// type BBB struct {
+// 	gorm.Model
+// 	Name string
+// }

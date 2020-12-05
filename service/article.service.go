@@ -8,6 +8,7 @@ import (
 	"gemini/util"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/gin-gonic/gin"
 )
@@ -36,18 +37,32 @@ func CreateArticle(c *gin.Context) {
 		fmt.Println(err)
 	}
 
-	// fmt.Println(article.TagID)
-	tag := database.FindTagByID(article.TagID)
+	tagIDs := make([]uint, 0)
 
-	article.Tag = tag
+	for _, item := range strings.Split(c.Query("tags"), ",") {
+		id, _ := strconv.Atoi(item)
+		tagIDs = append(tagIDs, uint(id))
+	}
+
+	// fmt.Println(article.TagID)
+	// tags := make([]database.Tag, 0)
+	// for _, id := range article.TagIDs {
+	// 	tag := database.FindTagByID(id)
+	// 	if tag  {
+
+	// 	}
+	// }
+	tags := database.FindTagsByIDs(tagIDs)
+
+	article.Tags = append(article.Tags, tags...)
 	// article.TagID = uint(tagID)
 
-	fmt.Println(tag, article)
+	fmt.Println(tags, article)
 
 	code := status.Success
 	err := validate.Struct(article)
 	if err == nil {
-		if database.ExistTagByID(article.TagID) {
+		if database.ExistTagsByIDs(tagIDs) {
 			database.CreateArticle(article)
 		} else {
 			code = status.ErrorNotExistTag
@@ -136,8 +151,12 @@ func SearchArticles(c *gin.Context) {
 
 //EditArticle ...
 func EditArticle(c *gin.Context) {
+	tagIDs := make([]uint, 0)
+	for _, item := range strings.Split(c.Query("tagID"), ";") {
+		tagID, _ := strconv.Atoi(item)
+		tagIDs = append(tagIDs, uint(tagID))
+	}
 	id, _ := strconv.Atoi(c.Param("id"))
-	tagID, _ := strconv.Atoi(c.Query("tagID"))
 	title := c.Query("title")
 	description := c.Query("description")
 	coverImageURL := c.Query("coverImageURL")
@@ -154,8 +173,8 @@ func EditArticle(c *gin.Context) {
 			if title != "" {
 				article.Title = title
 			}
-			if database.ExistTagByID(uint(tagID)) {
-				article.Tag = database.FindTagByID(uint(tagID))
+			if database.ExistTagsByIDs(tagIDs) {
+				article.Tags = append(article.Tags, database.FindTagsByIDs(tagIDs)...)
 			}
 			article.Description = description
 			article.CoverImageURL = coverImageURL
