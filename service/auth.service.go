@@ -27,7 +27,7 @@ func CheckAuth(c *gin.Context) {
 	if validErrors == nil {
 		authCode := database.CheckAuth(user.Username, user.Password)
 		if authCode == status.Success {
-			token, err := util.GenerateToken(user.Username, user.Password)
+			token, err := util.GenerateToken(user.Username)
 			if err != nil {
 				code = status.ErrorAuthToken
 			} else {
