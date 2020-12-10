@@ -1,6 +1,10 @@
 package database
 
-import "fmt"
+import (
+	"fmt"
+
+	"gorm.io/gorm/clause"
+)
 
 //CreateTag ...
 func CreateTag(tag Tag) {
@@ -52,7 +56,7 @@ func FindTagByName(name string) (tag Tag) {
 //GetTags ...
 func GetTags(page int, size int, conditions interface{}) (tags []Tag) {
 
-	db.Where(conditions).Offset(page).Limit(size).Find(&tags)
+	db.Preload(clause.Associations).Where(conditions).Offset(page).Limit(size).Find(&tags)
 	// fmt.Println(tags[0])
 	return
 }

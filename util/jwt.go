@@ -11,18 +11,18 @@ var jwtSecret []byte
 //Claims ...
 type Claims struct {
 	Username string
-	Password string
+	Role     string
 	jwt.StandardClaims
 }
 
 //GenerateToken ...
-func GenerateToken(username, password string) (string, error) {
+func GenerateToken(username string) (string, error) {
 	generateTime := time.Now()
 	expireTime := generateTime.Add(3 * time.Hour)
 
 	claims := Claims{
 		username,
-		password,
+		"admin",
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "gemini",

@@ -5,6 +5,7 @@ config/config.json
 config/config.yaml
 
 gemini.exe
+gemini
 mysql.session.sql
 
 upload
