@@ -32,6 +32,7 @@ func CheckAuth(c *gin.Context) {
 				code = status.ErrorAuthToken
 			} else {
 				data["token"] = token
+				data["permissions"] = "user"
 				code = status.Success
 			}
 		} else {
