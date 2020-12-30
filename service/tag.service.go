@@ -114,7 +114,8 @@ func EditTag(c *gin.Context) {
 //DeleteTag ...
 func DeleteTag(c *gin.Context) {
 	id, _ := strconv.Atoi(c.Param("id"))
-	ids := make([]uint, 1)
+
+	ids := make([]uint, 0)
 	// for _, item := range strings.Split(c.Query("tagID"), ";") {
 	// 	id, _ := strconv.Atoi(item)
 	// 	ids = append(ids, uint(id))

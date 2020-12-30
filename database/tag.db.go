@@ -32,6 +32,8 @@ func ExistTagsByIDs(ids []uint) bool {
 	// db.Where("id = ?", id).First(&tag)
 	db.Find(&tags, ids)
 
+	// fmt.Println(tags, len(tags), len(ids))
+
 	if len(tags) == len(ids) {
 		return true
 	}

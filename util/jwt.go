@@ -10,8 +10,8 @@ var jwtSecret []byte
 
 //Claims ...
 type Claims struct {
-	Username string
-	Role     string
+	Username    string
+	Permissions string
 	jwt.StandardClaims
 }
 
@@ -22,7 +22,7 @@ func GenerateToken(username string) (string, error) {
 
 	claims := Claims{
 		username,
-		"admin",
+		"user",
 		jwt.StandardClaims{
 			ExpiresAt: expireTime.Unix(),
 			Issuer:    "gemini",
@@ -37,6 +37,7 @@ func GenerateToken(username string) (string, error) {
 //ParseToken ...
 func ParseToken(token string) (*Claims, error) {
 	tokenClaims, err := jwt.ParseWithClaims(token, &Claims{}, func(token *jwt.Token) (interface{}, error) {
+		// fmt.Println(jwtSecret)
 		return jwtSecret, nil
 	})
 	if tokenClaims != nil {
