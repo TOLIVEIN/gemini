@@ -52,10 +52,12 @@ func CreateTag(c *gin.Context) {
 	code := status.Success
 
 	err := validate.Struct(tag)
+	data := make([]database.Tag, 0)
 	if err == nil {
 		if !database.ExistTagByName(tag.Name) {
 			// code = status.Success
 			database.CreateTag(tag)
+			data = append(data, tag)
 		} else {
 			code = status.ErrorExistTag
 		}
@@ -68,7 +70,7 @@ func CreateTag(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"code":    code,
 		"message": status.GetMessage(code),
-		"data":    make(map[string]string),
+		"data":    data,
 	})
 }
 

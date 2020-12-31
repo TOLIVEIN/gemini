@@ -15,7 +15,7 @@ func JWT() gin.HandlerFunc {
 	return func(c *gin.Context) {
 
 		header := c.Request.Header
-		token := strings.Join(header["Token"], "")
+		token := strings.Join(header["token"], "")
 
 		var data interface{}
 		code := status.Success
