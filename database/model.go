@@ -6,46 +6,46 @@ import (
 
 //User ...
 type User struct {
-	gorm.Model
+	gorm.Model `json:"id,createdAt,updatedAt,deletedAt"`
 	// ID        uint `gorm:"primarykey"`
 	// CreatedAt time.Time
 	// UpdatedAt time.Time
-	Username string `validate:"required,min=1,max=20"`
-	Password string `validate:"required,min=6"`
-	Email    string `validate:"required,email"`
+	Username string `validate:"required,min=1,max=20" json:"username"`
+	Password string `validate:"required,min=6" json:"password"`
+	Email    string `validate:"required,email" json:"email"`
 }
 
 //Auth ...
 type Auth struct {
-	ID       uint   `gorm:"primarykey"`
-	Username string `validate:"required,min=1,max=20"`
-	Password string `validate:"required,min=6"`
+	ID       uint   `gorm:"primarykey" json:"id"`
+	Username string `validate:"required,min=1,max=20" json:"username"`
+	Password string `validate:"required,min=6" json:"password"`
 }
 
 //Article ...
 type Article struct {
-	gorm.Model
+	gorm.Model `json:"id,createdAt,updatedAt,deletedAt"`
 	// ID        uint `gorm:"primarykey"`
 	// CreatedAt time.Time
 	// UpdatedAt time.Time
 	// TagIDs        []uint
-	Title         string `validate:"required,max=100"`
-	Description   string `validate:"max=255"`
-	CoverImageURL string `validate:"required,max=255"`
-	Content       string
-	CreatedBy     string `validate:"max=20"`
-	UpdatedBy     string
-	Tags          []*Tag `gorm:"many2many:article_tag"`
+	Title         string `validate:"required,max=100" json:"title"`
+	Description   string `validate:"max=255" json:"description"`
+	CoverImageURL string `validate:"required,max=255" json:"coverImageURL"`
+	Content       string `json:"content"`
+	CreatedBy     string `validate:"max=20" json:"createdBy"`
+	UpdatedBy     string `json:"updatedBy"`
+	Tags          []*Tag `gorm:"many2many:article_tag" json:"tags"`
 }
 
 //Tag ...
 type Tag struct {
-	gorm.Model
+	gorm.Model `json:"id,createdAt,updatedAt,deletedAt"`
 	// ID        uint `gorm:"primarykey"`
 	// CreatedAt time.Time
 	// UpdatedAt time.Time
-	Name      string `validate:"required,max=20"`
-	CreatedBy string `validate:"max=20"`
-	UpdatedBy string
-	Articles  []*Article `gorm:"many2many:article_tag"`
+	Name      string     `validate:"required,max=20" json:"name"`
+	CreatedBy string     `validate:"max=20" json:"createdBy"`
+	UpdatedBy string     `json:"updatedBy"`
+	Articles  []*Article `gorm:"many2many:article_tag" json:"articles"`
 }
