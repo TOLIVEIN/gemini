@@ -20,12 +20,12 @@ func Init() *gin.Engine {
 
 	gin.SetMode(config.GetConfig().RunMode)
 
-	r.GET("/index", func(c *gin.Context) {
-		c.JSON(http.StatusOK, gin.H{
-			"code":    status.Success,
-			"message": status.GetMessage(status.Success),
-		})
-	})
+	// r.GET("/index", func(c *gin.Context) {
+	// 	c.JSON(http.StatusOK, gin.H{
+	// 		"code":    status.Success,
+	// 		"message": status.GetMessage(status.Success),
+	// 	})
+	// })
 
 	r.POST("/auth", service.CheckAuth)
 
@@ -66,6 +66,15 @@ func Init() *gin.Engine {
 			user.Use(middleware.JWT()).PUT(":id", service.EditUser)
 			user.Use(middleware.JWT()).DELETE(":id", service.DeleteUser)
 		}
+	}
+	index := r.Group("/index")
+	{
+		index.Use(middleware.JWT()).GET("", func(c *gin.Context) {
+			c.JSON(http.StatusOK, gin.H{
+				"code":    status.Success,
+				"message": status.GetMessage(status.Success),
+			})
+		})
 	}
 
 	return r
