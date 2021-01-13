@@ -27,6 +27,9 @@ func GetTags(c *gin.Context) {
 
 	code := status.Success
 
+	names := c.Query("tagNames")
+	fmt.Println(names)
+
 	size, _ := strconv.Atoi(config.GetConfig().PageSize)
 
 	data["tags"] = database.GetTags(util.GetPage(c), size, conditions)
