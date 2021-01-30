@@ -57,7 +57,7 @@ func CreateArticle(c *gin.Context) {
 	article.Tags = append(article.Tags, tags...)
 	// article.TagID = uint(tagID)
 
-	fmt.Println(tags, article)
+	// fmt.Println(tags, article)
 
 	code := status.Success
 	err := validate.Struct(article)
