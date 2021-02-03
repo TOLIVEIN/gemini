@@ -75,16 +75,16 @@ jobs:
           docker tag $IMAGE_NAME $IMAGE_ID:$VERSION
           docker push $IMAGE_ID:$VERSION
 
-    deploy:
-        needs: build
+  deploy:
+      needs: build
 
-        runs-on: ubuntu-latest
-        steps:
-            - name: Deploy gemini
-              uses: appleboy/ssh-action@master
-              with:
-                  host: ${{ secrets.HOST }}
-                  username: ${{ secrets.USERNAME }}
-                  key: ${{ secrets.KEY }}
-                  port: ${{ secrets.PORT }}
-                  script: docker stop gemini && docker rm gemini && docker pull docker.pkg.github.com/tolivein/gemini/gemini:latest && docker run --name gemini -p 8080:8080 -d docker.pkg.github.com/tolivein/gemini/gemini
+      runs-on: ubuntu-latest
+      steps:
+          - name: Deploy gemini
+            uses: appleboy/ssh-action@master
+            with:
+                host: ${{ secrets.HOST }}
+                username: ${{ secrets.USERNAME }}
+                key: ${{ secrets.KEY }}
+                port: ${{ secrets.PORT }}
+                script: docker stop gemini && docker rm gemini && docker pull docker.pkg.github.com/tolivein/gemini/gemini:latest && docker run --name gemini -p 8080:8080 -d docker.pkg.github.com/tolivein/gemini/gemini
