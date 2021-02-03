@@ -24,8 +24,8 @@ FROM scratch as runner
 
 COPY --from=builder /build/gemini /opt/app/
 
-# COPY config.json /opt/app/
+COPY config/config.yaml /opt/app/
 
 EXPOSE 8080
 
-ENTRYPOINT ["/opt/app/gemini"]
+ENTRYPOINT ["/opt/app/gemini", "-c", "/opt/app/config.json"]
