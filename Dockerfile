@@ -15,7 +15,7 @@ RUN go mod download
 COPY . .
 
 # RUN go build -ldflags "-s -w" -o pma .
-RUN CGO_ENABLED=0 go build -ldflags "-s -w" -o pma
+RUN CGO_ENABLED=0 go build -ldflags "-s -w" -o gemini
 
 
 FROM scratch as runner
