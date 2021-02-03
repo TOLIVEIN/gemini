@@ -87,4 +87,8 @@ jobs:
                 username: ${{ secrets.USERNAME }}
                 key: ${{ secrets.KEY }}
                 port: ${{ secrets.PORT }}
-                script: docker stop gemini && docker rm gemini && docker pull docker.pkg.github.com/tolivein/gemini/gemini:latest && docker run --name gemini -p 8080:8080 -d docker.pkg.github.com/tolivein/gemini/gemini
+                script: |
+                  docker stop gemini
+                  docker rm gemini
+                  docker pull docker.pkg.github.com/tolivein/gemini/gemini:latest
+                  docker run --name gemini -p 8080:8080 -d docker.pkg.github.com/tolivein/gemini/gemini
