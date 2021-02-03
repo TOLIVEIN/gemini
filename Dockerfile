@@ -28,4 +28,4 @@ COPY --from=builder /build/gemini /opt/app/
 
 EXPOSE 8080
 
-ENTRYPOINT ["/opt/app/gemini", "-c", "/opt/app/config.yaml"]
+ENTRYPOINT ["/opt/app/gemini"]
