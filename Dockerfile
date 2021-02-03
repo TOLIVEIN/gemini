@@ -24,7 +24,7 @@ FROM scratch as runner
 
 COPY --from=builder /build/gemini /opt/app/
 
-COPY config/config.yaml /opt/app/
+COPY --from=builder /build/config/config.yaml /opt/app/
 
 EXPOSE 8080
 
