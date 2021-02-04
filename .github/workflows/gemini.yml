@@ -91,4 +91,4 @@ jobs:
                   docker stop gemini
                   docker rm gemini
                   docker pull docker.pkg.github.com/tolivein/gemini/gemini:latest
-                  docker run --name gemini -v gemini-config:/opt/app -p 8080:8080 -d docker.pkg.github.com/tolivein/gemini/gemini
+                  docker run --name gemini -v gemini-config:/config -p 8080:8080 -d docker.pkg.github.com/tolivein/gemini/gemini
