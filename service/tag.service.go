@@ -51,7 +51,6 @@ func CreateTag(c *gin.Context) {
 	if err := c.ShouldBind(&tag); err != nil {
 		fmt.Println(err)
 	}
-
 	code := status.Success
 
 	err := validate.Struct(tag)
@@ -60,7 +59,7 @@ func CreateTag(c *gin.Context) {
 		if !database.ExistTagByName(tag.Name) {
 			// code = status.Success
 			database.CreateTag(tag)
-			data = append(data, tag)
+			data = append(data, database.FindTagByName(tag.Name))
 		} else {
 			code = status.ErrorExistTag
 		}
