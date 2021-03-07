@@ -5,6 +5,7 @@ config/config.json
 config/config.yaml
 config/*.pem
 config/*.key
+config/*crt
 
 gemini.exe
 gemini

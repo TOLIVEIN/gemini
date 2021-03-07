@@ -15,12 +15,14 @@ func main() {
 	router := router.Init()
 
 	s := &http.Server{
-		Addr:    fmt.Sprintf(":%s", config.GetConfig().Port),
-		Handler: router,
+		Addr:           fmt.Sprintf(":%s", config.GetConfig().Port),
+		Handler:        router,
+		MaxHeaderBytes: 1 << 20,
 		// ReadTimeout: ,
 		// WriteTimeout: ,
-		MaxHeaderBytes: 1 << 20,
-	}
 
-	s.ListenAndServeTLS("config/tolivein.cn.pem", "config/tolivein.cn.key")
+	}
+	// s.ListenAndServe()
+
+	s.ListenAndServeTLS("config/fullchain.pem", "config/privkey.pem")
 }
