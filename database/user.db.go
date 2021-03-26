@@ -26,10 +26,7 @@ func ExistUserByUsername(username string) bool {
 
 	db.Where("username = ?", username).First(&user)
 
-	if user.ID > 0 {
-		return true
-	}
-	return false
+	return user.ID > 0
 }
 
 //ExistUserByID ...
@@ -39,10 +36,7 @@ func ExistUserByID(id uint) bool {
 
 	db.Where("id = ?", id).First(&user)
 
-	if user.ID > 0 {
-		return true
-	}
-	return false
+	return user.ID > 0
 }
 
 //GetUsers ...

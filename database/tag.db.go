@@ -19,10 +19,7 @@ func ExistTagByName(name string) bool {
 
 	db.Where("name = ?", name).First(&tag)
 
-	if tag.ID > 0 {
-		return true
-	}
-	return false
+	return tag.ID > 0
 }
 
 //ExistTagsByIDs ...
@@ -34,10 +31,7 @@ func ExistTagsByIDs(ids []uint) bool {
 
 	// fmt.Println(tags, len(tags), len(ids))
 
-	if len(tags) == len(ids) {
-		return true
-	}
-	return false
+	return len(tags) == len(ids)
 }
 
 //FindTagsByIDs ...

@@ -16,10 +16,7 @@ func ExistArticleByName(name string) bool {
 
 	db.Where("name = ?", name).First(&article)
 
-	if article.ID > 0 {
-		return true
-	}
-	return false
+	return article.ID > 0
 }
 
 //ExistArticleByID ...
@@ -28,10 +25,7 @@ func ExistArticleByID(id uint) bool {
 
 	db.Where("id = ?", id).First(&article)
 
-	if article.ID > 0 {
-		return true
-	}
-	return false
+	return article.ID > 0
 }
 
 //GetArticles ...
@@ -74,7 +68,7 @@ func EditArticle(id uint, data interface{}) {
 
 //DeleteArticle ...
 func DeleteArticle(id uint) {
-	db.Where("id = ?", id).Delete(Article{})
+	db.Where("id = ?", id).Delete(&Article{})
 }
 
 //FindArticleByID ...

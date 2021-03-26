@@ -206,7 +206,6 @@ func DeleteArticle(c *gin.Context) {
 	if err == nil {
 
 		if database.ExistArticleByID(uint(id)) {
-
 			database.DeleteArticle(uint(id))
 		} else {
 			code = status.ErrorNotExistArticle
